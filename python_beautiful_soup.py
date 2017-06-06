@@ -5,8 +5,8 @@ import re
 import time
 
 # Will be improvement
-# target_price, stop_loss_price
-expect_dict = {'MSN': [44.1, 0] ,'LHG': [19.9, 0], 'QNS':[100.0, 0], 'HD2': [13.9, 0], 'HID': [4.13, 0], 'HVG': [7.25, 0], 'TYA': [12.4, 0]}
+# buy_price, target_price(+5%), stop_loss_price(-10%)
+expect_dict = {'MSN': [42.84, 0.05, 0.1] ,'LHG': [19.7, 0.05, 0.1], 'QNS':[90.0, 0.05, 0.1], 'HD2': [14.3, 0.05, 0.1], 'HID': [4.32, 0.05, 0.1], 'HVG': [7.3, 0.05, 0.1], 'TYA': [11.279, 0.05, 0.1]}
 
 def displayStock( stock_url ):
 	r = requests.get(stock_url)
@@ -43,15 +43,20 @@ def displayStock( stock_url ):
 	for key, values in expect_dict.iteritems():
 		if MaCK == key:
 #			print MaCK + "\t" +str(expect_dict[key])
-			target_price = expect_dict[key][0]
-			stop_loss_price = expect_dict[key][1]
+			buy_price = expect_dict[key][0]
+			target_price = float(buy_price) + (float(buy_price) * float(expect_dict[key][1]))
+			stop_loss_price = float(buy_price) - (float(buy_price) * float(expect_dict[key][2]))
+			percent_Lai_Lo = ((float(GiaHT) - float(buy_price))*100)/float(buy_price)
+			
+			print "Lai/lo:" + " "+ str(("%.2f" % percent_Lai_Lo))+"%\t", 
+			# predict message is optional
 			predict_message = ""
-			if ( float(target_price) > float(GiaHT) ) : predict_message = " => Vuot qua ky vong, theo doi"
-			elif ( float(target_price) == float(GiaHT) ) : predict_message = " => Bang gia ky vong, ban"
-			elif ( float(target_price) < float(GiaHT) ) : predict_message = " => Thap hon gia ky vong, theo doi"
-			elif ( float(stop_loss_price) >= float(GiaHT) ) : predict_message = " => Cut-loss"
-			print "target_price:" + " "+ str(target_price) + " "+ "stop_loss_price:" + " "+ str(stop_loss_price) + predict_message
-			#print "target_price" + " "+ str(target_price) + "Gia Hien Tai" + " "+ str(GiaHT) + "=>"+ predict_message
+			if ( float(GiaHT) >= float(target_price) ) : predict_message = " => [GOOD] >= target price(+5%) => SELL"
+			elif ( float(stop_loss_price) < float(GiaHT) < float(buy_price) ) : predict_message = " => [lower price] cut-loss " + str(("%.2f" % stop_loss_price)) + "[-10%]"
+			elif ( float(buy_price) < float(GiaHT) < float(target_price) ) : predict_message = " => [higher price] target " + str(("%.2f" % target_price)) + "[+5%]"
+			elif ( float(GiaHT) <= float(stop_loss_price) ) : predict_message = " => [WARNING] CUT-LOSS"
+			#print "buy_price:" + " "+ str(buy_price) + " "+ "target_price:" + " "+ str(target_price) + " "+ "stop_loss_price:" + " "+ str(stop_loss_price) + predict_message
+			print predict_message
 
 # main
 #count = 0

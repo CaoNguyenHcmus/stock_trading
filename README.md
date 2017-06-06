@@ -2,5 +2,9 @@
 using python to trade stock
 
 Requirements:
-# Installation
+====
+Installation
+```python
+# sudo apt-get install python-requests
 # sudo apt-get install python-bs4
+```
