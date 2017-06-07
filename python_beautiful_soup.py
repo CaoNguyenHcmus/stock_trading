@@ -1,15 +1,17 @@
 #!/usr/bin/python
+import sys # for exit
 from bs4 import BeautifulSoup
 import requests
 import re
 import time
+import argparse
 
 from termcolor import colored
 
 # buy_price, target_price(+5%), stop_loss_price(-10%)
 expect_dict = {'MSN': [42.84, 0.05, 0.1] ,'LHG': [19.7, 0.05, 0.1], 'QNS':[90.0, 0.05, 0.1], 'HD2': [14.3, 0.05, 0.1], 'HID': [4.32, 0.05, 0.1], 'HVG': [7.3, 0.05, 0.1], 'TYA': [11.279, 0.05, 0.1]}
 
-def displayStock( stock_url ):
+def displayStock( stock_url, is_predict ):
 	r = requests.get(stock_url)
 	#r = requests.get(lhg_url)
 
@@ -73,32 +75,63 @@ def displayStock( stock_url ):
 				#print "Bang 0"
 				Scolor = "yellow"
 
-			print "Return/Loss:" + " "+ colored(str(("%.2f" % percent_Lai_Lo))+"%", Scolor)+"\t"
-			''' predict_message disable
-			print "Lai/lo:" + " "+ str(("%.2f" % percent_Lai_Lo))+"%\t", 
-			# predict message is optional
-			predict_message = ""
-			if ( float(GiaHT) >= float(target_price) ) : predict_message = " => [GOOD] >= target price(+5%) => SELL"
-			elif ( float(stop_loss_price) < float(GiaHT) < float(buy_price) ) : predict_message = " => [lower price] cut-loss " + str(("%.2f" % stop_loss_price)) + "[-10%]"
-			elif ( float(buy_price) < float(GiaHT) < float(target_price) ) : predict_message = " => [higher price] target " + str(("%.2f" % target_price)) + "[+5%]"
-			elif ( float(GiaHT) <= float(stop_loss_price) ) : predict_message = " => [WARNING] CUT-LOSS"
-			#print "buy_price:" + " "+ str(buy_price) + " "+ "target_price:" + " "+ str(target_price) + " "+ "stop_loss_price:" + " "+ str(stop_loss_price) + predict_message
-			print predict_message
-			'''
+			if is_predict is True: # predict_message enable
+				print "Return/Loss:" + " "+ colored(str(("%.2f" % percent_Lai_Lo))+"%", Scolor)+"\t",
+				# predict message is optional
+				predict_message = ""
+				if ( float(GiaHT) >= float(target_price) ) : predict_message = " => [GOOD] >= target price(+5%) => SELL"
+				elif ( float(stop_loss_price) < float(GiaHT) < float(buy_price) ) : predict_message = " => [lower price] cut-loss " + str(("%.2f" % stop_loss_price)) + "[-10%]"
+				elif ( float(buy_price) < float(GiaHT) < float(target_price) ) : predict_message = " => [higher price] target " + str(("%.2f" % target_price)) + "[+5%]"
+				elif ( float(GiaHT) <= float(stop_loss_price) ) : predict_message = " => [WARNING] CUT-LOSS"
+				#print "buy_price:" + " "+ str(buy_price) + " "+ "target_price:" + " "+ str(target_price) + " "+ "stop_loss_price:" + " "+ str(stop_loss_price) + predict_message
+				print predict_message
+			else:
+				print "Return/Loss:" + " "+ colored(str(("%.2f" % percent_Lai_Lo))+"%", Scolor)+"\t"
 
-# main
-#count = 0
-#while (count < 1):
-	#print 'The count is:', count
-	#count = count + 1
-print "The time of maximum pessimism is the best time to buy"
-print "and the time of maximum optimism is the best time to sell."
-with open('stock_url.txt') as f:
-	for stock_url in f.read().splitlines():
-	#		print lines
-		displayStock(stock_url)
-f.close() 
-	# Wait for 5 seconds
-#	time.sleep(3)
+def mainProcess( is_watchlist, is_predict ):
+	#count = 0
+	#while (count < 1):
+		#print 'The count is:', count
+		#count = count + 1
+	print "The time of maximum pessimism is the best time to buy"
+	print "and the time of maximum optimism is the best time to sell."
+	with open('stock_url.txt') as f:
+		for stock_url in f.read().splitlines():
+		#		print lines
+			displayStock(stock_url, is_predict)
+	f.close() 
+		# Wait for 5 seconds
+	#	time.sleep(3)
 
-print "Good bye!"
+	print "Good bye!"
+
+##
+## MAIN
+##
+is_watchlist = False
+is_predict = False
+#
+# Create option parser
+#
+
+parser = argparse.ArgumentParser(description="Stock trading script")
+
+# action
+parser.add_argument("-w", "--watchlist", help='display watch list', action="store_true")
+parser.add_argument("-p", "--predict", help='display watch list and predict message', action="store_true")
+
+args = parser.parse_args()
+
+if args.watchlist:
+#	print "watchlist = %s" % args.watchlist
+	is_watchlist = True
+if args.predict:
+#	print "predict = %s" % args.predict
+	is_predict = True
+
+
+if is_watchlist is True:
+	mainProcess( is_watchlist, is_predict )
+else:
+	parser.print_help()
+	sys.exit(0)

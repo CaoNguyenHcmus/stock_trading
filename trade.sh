@@ -1,6 +1,7 @@
 #!/bin/bash
 while true; do
-python python_beautiful_soup.py
+python python_beautiful_soup.py -w
+#python python_beautiful_soup.py -w -p
 # Display time: 60s
 sleep 45
 clear

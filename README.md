@@ -12,5 +12,5 @@ Installation
 TODO
 ====
 [x] print color
-[] support parse command
+[x] support parse command
 [] support notification
