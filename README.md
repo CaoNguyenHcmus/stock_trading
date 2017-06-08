@@ -14,3 +14,8 @@ TODO
 [x] print color
 [x] support parse command
 [] support notification
+
+IDEAS
+====
+AI ideas:
+https://www.quora.com/Can-I-use-TensorFlow-to-analyse-financial-data

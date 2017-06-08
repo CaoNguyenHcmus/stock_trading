@@ -11,7 +11,7 @@ from termcolor import colored
 # buy_price, target_price(+5%), stop_loss_price(-10%)
 expect_dict = {'MSN': [42.84, 0.05, 0.1] ,'LHG': [19.7, 0.05, 0.1], 'QNS':[90.0, 0.05, 0.1], 'HD2': [14.3, 0.05, 0.1], 'HID': [4.32, 0.05, 0.1], 'HVG': [7.3, 0.05, 0.1], 'TYA': [11.279, 0.05, 0.1]}
 
-def displayStock( stock_url, is_predict ):
+def displayStock( stock_url, is_predict, is_color ):
 	r = requests.get(stock_url)
 	#r = requests.get(lhg_url)
 
@@ -34,12 +34,15 @@ def displayStock( stock_url, is_predict ):
 	quoted_pattern = re.findall(r'"[^"]*"', str(tag_down))
 	wordList = str(quoted_pattern).split()
 	trend = re.findall(r'\w+', str(wordList[0]))
-	color = re.findall(r'\w+', str(wordList[1]))
-	if color[0] == "orange":	# termcolor don't support "orange" color => use "yellow" color to replace
-		color[0] = "yellow"
 #	print "trend: " + str(trend[1])
-#	print "color: " + str(color[0])
-
+	
+	color = re.findall(r'\w+', str(wordList[1]))
+	if is_color is True:
+		if color[0] == "orange":	# termcolor don't support "orange" color => use "yellow" color to replace
+			color[0] = "yellow"
+#		print "color: " + str(color[0])
+	else:
+		color[0] = "white"
 	# Convert List to String
 	#str1 = ''.join(str(e) for e in tag_down)
 	#print str1
@@ -63,17 +66,20 @@ def displayStock( stock_url, is_predict ):
 			buy_price = expect_dict[key][0]
 			target_price = float(buy_price) + (float(buy_price) * float(expect_dict[key][1]))
 			stop_loss_price = float(buy_price) - (float(buy_price) * float(expect_dict[key][2]))
-			percent_Lai_Lo = ((float(GiaHT) - float(buy_price))*100)/float(buy_price)
-			# Overal Color
-			if percent_Lai_Lo > 0.0:
-				#print "Lon hon 0"
-				Scolor = "green"
-			elif percent_Lai_Lo < 0.0:
-				#print "Nho hon 0"
-				Scolor = "red"
-			elif percent_Lai_Lo == 0.0:
-				#print "Bang 0"
-				Scolor = "yellow"
+			percent_Lai_Lo = ((float(GiaHT) - float(buy_price))*100)/float(buy_price)			
+			
+			if is_color is True: # Overal Color
+				if percent_Lai_Lo > 0.0:
+					#print "Lon hon 0"
+					Scolor = "green"
+				elif percent_Lai_Lo < 0.0:
+					#print "Nho hon 0"
+					Scolor = "red"
+				elif percent_Lai_Lo == 0.0:
+					#print "Bang 0"
+					Scolor = "yellow"
+			else:
+				Scolor = "white"
 
 			if is_predict is True: # predict_message enable
 				print "Return/Loss:" + " "+ colored(str(("%.2f" % percent_Lai_Lo))+"%", Scolor)+"\t",
@@ -88,7 +94,7 @@ def displayStock( stock_url, is_predict ):
 			else:
 				print "Return/Loss:" + " "+ colored(str(("%.2f" % percent_Lai_Lo))+"%", Scolor)+"\t"
 
-def mainProcess( is_watchlist, is_predict ):
+def mainProcess( is_watchlist, is_predict, is_color ):
 	#count = 0
 	#while (count < 1):
 		#print 'The count is:', count
@@ -98,7 +104,7 @@ def mainProcess( is_watchlist, is_predict ):
 	with open('stock_url.txt') as f:
 		for stock_url in f.read().splitlines():
 		#		print lines
-			displayStock(stock_url, is_predict)
+			displayStock(stock_url, is_predict, is_color)
 	f.close() 
 		# Wait for 5 seconds
 	#	time.sleep(3)
@@ -110,6 +116,7 @@ def mainProcess( is_watchlist, is_predict ):
 ##
 is_watchlist = False
 is_predict = False
+is_color = False
 #
 # Create option parser
 #
@@ -119,6 +126,7 @@ parser = argparse.ArgumentParser(description="Stock trading script")
 # action
 parser.add_argument("-w", "--watchlist", help='display watch list', action="store_true")
 parser.add_argument("-p", "--predict", help='display watch list and predict message', action="store_true")
+parser.add_argument("-c", "--color", help='display watch list with color', action="store_true")
 
 args = parser.parse_args()
 
@@ -128,10 +136,13 @@ if args.watchlist:
 if args.predict:
 #	print "predict = %s" % args.predict
 	is_predict = True
+if args.color:
+#	print "color = %s" % args.color
+	is_color = True
 
 
 if is_watchlist is True:
-	mainProcess( is_watchlist, is_predict )
+	mainProcess( is_watchlist, is_predict, is_color)
 else:
 	parser.print_help()
 	sys.exit(0)
