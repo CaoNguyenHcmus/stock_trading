@@ -16,7 +16,7 @@ def displayStock( stock_url, is_predict, is_color ):
 	#r = requests.get(lhg_url)
 
 	data = r.text
-	soup = BeautifulSoup(data)
+	soup = BeautifulSoup(data, "html.parser")
 
 	# Ma
 #	print soup.title.string.lstrip()[0:3]
