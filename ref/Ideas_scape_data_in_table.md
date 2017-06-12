@@ -1,0 +1,1 @@
+Data in table: https://chrisalbon.com/python/beautiful_soup_scrape_table.html

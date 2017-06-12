@@ -2,10 +2,12 @@
 import requests
 from bs4 import BeautifulSoup
 
-maCK = 'DCM'
+maCK = 'HD2'
+maCK = raw_input("Enter maCK: ")
 stock_url = 'http://www.cophieu68.vn/snapshot.php?id=' + maCK
 print stock_url
-#r = requests.get(stock_url)
+r = requests.get(stock_url)
+'''
 r = requests.head(stock_url)
 print r.headers
 '''
@@ -73,13 +75,74 @@ else:
 #Phan tuc luc cau va luc ban
 #Phan tich gia
 #TODO
+
+
+####
+stockname_close = soup.find('strong', id="stockname_close").string # Gia hien tai tag <strong>
+print "Gia hien tai: " + stockname_close,
+
+stockname_change = soup.find('strong', id="stockname_change").find('span').string.split() # Gia hien tai tag <strong>
+print stockname_change
+#print "Thay doi: " + stockname_change
+
+stockname_ref = float(stockname_close) - float(stockname_change[0])
+print "Gia tham chieu: " + str(stockname_ref)
+###
+stockname_volume = soup.find('strong', id="stockname_volume").find('span').string #cell_in_table tag <td>
+print "stockname_volume hien tai: " + stockname_volume
+
+stockname_price_lowest = soup.find('strong', id="stockname_price_lowest").find('span').string #cell_in_table tag <td>
+print "stockname_price_lowest hien tai: " + stockname_price_lowest,
+
+stockname_price_highest = soup.find('strong', id="stockname_price_highest").find('span').string #cell_in_table tag <td>
+print "stockname_price_highest hien tai: " + stockname_price_highest
+
+''' Du lieu lich su trong ngay (Luu y trong nay no co ve ra cai bieu do luon)
+tableDataLichSu = soup.find("div", {"id": "trade_detail"}).contents #cell_in_table tag <td>
+print tableDataLichSu
+'''
+#'divData1LichSu'
+
+
+historyprice_url='http://www.cophieu68.vn/historyprice.php?id=' + maCK
+print historyprice_url
+r = requests.get(historyprice_url)
+'''
+r = requests.head(stock_url)
+print r.headers
+'''
+data = r.text
+#print data
+soup = BeautifulSoup(data, "html.parser")
+#print(soup.prettify())
+#tableDataLichSu = soup.find("div", {"id": "content"}).contents #cell_in_table tag <td>
+
+table = soup.find('table', attrs={'class':'stock'})
+#print table
+#https://gist.github.com/phillipsm/0ed98b2585f0ada5a769
+for table_row in table.findAll('tr'):
+	print table_row
+'''
+rows = table.find_all('tr')
+print rows
+'''
+
+'''
+for row in rows:
+    cols = row.find_all('td')
+    cols = [ele.text.strip() for ele in cols]
+    data.append([ele for ele in cols if ele]) # Get rid of empty values
+'''
+
+
 '''
 #####################################################################
 stock_url= 'http://s.cafef.vn/hose/DCM-cong-ty-co-phan-phan-bon-dau-khi-ca-mau.chn'
 print stock_url
-#r = requests.get(stock_url)
-r = requests.head(stock_url)
-print r.headers
+r = requests.get(stock_url)
+'''
+#r = requests.head(stock_url)
+#print r.headers
 '''
 data = r.text
 soup = BeautifulSoup(data, "html.parser")

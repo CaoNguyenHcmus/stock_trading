@@ -18,4 +18,9 @@ TODO
 IDEAS
 ====
 AI ideas:
+Based on day
 https://www.quora.com/Can-I-use-TensorFlow-to-analyse-financial-data
+https://github.com/llSourcell/How-to-Predict-Stock-Prices-Easily-Demo
+Based on volume
+====
+https://www.quora.com/How-can-you-predict-the-rise-fall-in-the-stocks-price-in-day-trading
