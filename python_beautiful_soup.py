@@ -20,7 +20,44 @@ def displayStock( stock_url, is_predict, is_color ):
 
 	# Ma
 #	print soup.title.string.lstrip()[0:3]
+	#########################
+	'''
+	gia_tham_chieu = soup.find('div', id="REF").string.split() # REF
+	print "gia_tham_chieu" + str(gia_tham_chieu)
+	gia_tran = soup.find('div', id="CE").string.split() # CE
+	print "gia_tran" + str(gia_tran)
+	gia_san = soup.find('div', id="FL").string.split() # FL
+	print "gia_san" + str(gia_san)
+	
+	kl_hien_tai = soup.find('div', id="CV").string.split() # FL
+	print "kl_hien_tai: " + str(kl_hien_tai)
+	'''
+	#====
+	list_dltp_price = []
+	dltp_price = soup.find("div", {"class" : "dltl-price"}).find('ul')
+	for li_tag in dltp_price.findAll('li'):
+		li = li_tag.find("div", {"class" : "right"})
+		if li != None:
+			#print li.string.split()[0]
+			list_dltp_price.append(li.string.split()[0])
+			#print "++++"
+	#print list_dltp_price
+	gia_mo_cua = list_dltp_price[0]
+	gia_cao_nhat = list_dltp_price[1]
+	gia_thap_nhat = list_dltp_price[2]
+	GDNN_KL_mua = list_dltp_price[3]
+	GDNN_KL_ban = list_dltp_price[4]
+	#Room_NN_con_lai = list_dltp_price[5]
+	#print "gia_mo_cua: " + gia_mo_cua
+	#print "gia_cao_nhat: " + gia_cao_nhat
+	#print "gia_thap_nhat: " + gia_thap_nhat
+	
+	#print "GDNN_KL_mua: " + GDNN_KL_mua, 
+	#print "GDNN_KL_ban: " + GDNN_KL_ban
+	
+	#print "Room_NN_con_lai: " + Room_NN_con_lai
 
+	#########################
 	# Gia //List type
 	tag_point=soup.find("div", {"class" : "dltlu-point"}).contents
 #	print tag_point[0] ## Print first character

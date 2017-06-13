@@ -117,11 +117,14 @@ soup = BeautifulSoup(data, "html.parser")
 #print(soup.prettify())
 #tableDataLichSu = soup.find("div", {"id": "content"}).contents #cell_in_table tag <td>
 
+'''
 table = soup.find('table', attrs={'class':'stock'})
 #print table
 #https://gist.github.com/phillipsm/0ed98b2585f0ada5a769
 for table_row in table.findAll('tr'):
 	print table_row
+'''
+
 '''
 rows = table.find_all('tr')
 print rows
