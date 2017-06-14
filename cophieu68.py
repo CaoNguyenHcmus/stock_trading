@@ -4,7 +4,22 @@ from bs4 import BeautifulSoup
 import re
 import sys # for exit
 
+from termcolor import colored
 
+###
+def isColor( value, ref ):
+	color = "while" #default color
+	if value > ref:
+		#print "Lon hon 0"
+		color = "green"
+	elif value < ref:
+		#print "Nho hon 0"
+		color = "red"
+	elif value == ref:
+		#print "Bang 0"
+		color = "yellow"
+	return color
+###
 
 ###############################################################################################
 #TODO
@@ -176,7 +191,7 @@ stockname_klb_tb = float(stockname_klb1.replace(",", "")) + float(stockname_klb2
 #print "stockname_klb_tb: " + "%0.0f" % stockname_klb_tb
 
 #TODO: print color
-print "Mua(Gia/KL): \t" + stockname_gm3 +"\t"+ stockname_klm3 +"\t"+ stockname_gm2  +"\t"+ stockname_klm2 +"\t"+ stockname_gm1 +"\t"+ stockname_klm1, 
+print "Mua(Gia/KL): \t" + stockname_gm3 +"\t"+ stockname_klm3 +"\t"+ stockname_gm2  +"\t"+ stockname_klm2 +"\t"+ stockname_gm1 +"\t"+ stockname_klm1 
 print "Ban(Gia/KL): \t" + stockname_gb1 +"\t"+ stockname_klb1 +"\t"+ stockname_gb2 +"\t"+ stockname_klb2 +"\t"+ stockname_gb3 +"\t"+ stockname_klb3
 print "=> gm_tb: " + "%0.2f" % stockname_gm_tb + "\tklm_tb: " + "%0.0f" % stockname_klm_tb + "\tgb_tb: " + "%0.2f" % stockname_gb_tb + "\tklb_tb: " + "%0.0f" % stockname_klb_tb
 
@@ -197,13 +212,14 @@ else:
 
 ####
 stockname_close = soup.find('strong', id="stockname_close").string # Gia hien tai tag <strong>
-print "Gia hien tai: " + stockname_close,
-color_stockname_close = isColor(float(stockname_close), float(gia_tham_chieu))
-print color_stockname_close
+#print "Gia hien tai: " + stockname_close,
 stockname_change = soup.find('strong', id="stockname_change").find('span').string.split() # Gia hien tai tag <strong>
-print stockname_change
 #print "Thay doi: " + stockname_change
 
+color_stockname_close = isColor(float(stockname_close), float(gia_tham_chieu[0]))
+print color_stockname_close
+
+print "Gia hien tai: " + colored(str(stockname_close), color_stockname_close) + "\t"+ colored(str(stockname_change), color_stockname_close)
 ###
 stockname_volume = soup.find('strong', id="stockname_volume").find('span').string #cell_in_table tag <td>
 print "KL hien tai: " + stockname_volume + "\t", 
@@ -235,18 +251,3 @@ stockname_price_highest = soup.find('strong', id="stockname_price_highest").find
 tableDataLichSu = soup.find("div", {"id": "trade_detail"}).contents #cell_in_table tag <td>
 print tableDataLichSu
 '''
-
-###
-def isColor( value, ref ):
-	color = "while" #default color
-	if value > ref:
-		#print "Lon hon 0"
-		color = "green"
-	elif value < ref:
-		#print "Nho hon 0"
-		color = "red"
-	elif value == ref:
-		#print "Bang 0"
-		color = "yellow"
-	return color
-###
