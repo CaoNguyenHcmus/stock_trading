@@ -29,7 +29,7 @@ def displayStock( stock_url, is_predict, is_color ):
 	gia_san = soup.find('div', id="FL").string.split() # FL
 	print "gia_san" + str(gia_san)
 	
-	kl_hien_tai = soup.find('div', id="CV").string.split() # FL
+	kl_hien_tai = soup.find('div', id="CV").string.split() # CV
 	print "kl_hien_tai: " + str(kl_hien_tai)
 	'''
 	#====

@@ -14,7 +14,7 @@ TODO
 [x] print color
 [x] support parse command
 [] support notification
-
+[x] Need to utility cophieu68 vs cafe about maCK
 IDEAS
 ====
 AI ideas:
