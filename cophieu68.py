@@ -199,11 +199,16 @@ print "=> gm_tb: " + "%0.2f" % stockname_gm_tb + "\tklm_tb: " + "%0.0f" % stockn
 # Chenh lech KL dat mua - KL dat ban
 cung_cau_kl_mua_ban = int(stockname_klm_tb)-int(stockname_klb_tb)
 if cung_cau_kl_mua_ban > 0:
-	print "cung_cau_kl_mua_ban: "+ str(cung_cau_kl_mua_ban) +  " => cau > cung => gia se tang (Xu huong ngan han)"
+	print "cung_cau_kl_mua_ban: "+ str(cung_cau_kl_mua_ban) +  " => cau > cung => gia se tang (Xu huong ngan han)",
+	percent_mua_ban = (cung_cau_kl_mua_ban * 100) / int(stockname_klm_tb)
+	print "percent_mua_ban: " + str(percent_mua_ban) + "%"
 elif cung_cau_kl_mua_ban < 0:
-	print "cung_cau_kl_mua_ban: " + str(cung_cau_kl_mua_ban) + " => cau < cung => gia se giam (Xu huong ngan han)"
+	print "cung_cau_kl_mua_ban: " + str(cung_cau_kl_mua_ban) + " => cau < cung => gia se giam (Xu huong ngan han)",
+	percent_mua_ban = (cung_cau_kl_mua_ban * 100) / int(stockname_klb_tb)
+	print "percent_mua_ban: " + str(percent_mua_ban) + "%"
 else:
 	print "KL cau = cung: " + str(cung_cau_kl_mua_ban)
+
 
 #Phan tuc luc cau va luc ban
 #Phan tich gia
@@ -217,7 +222,7 @@ stockname_change = soup.find('strong', id="stockname_change").find('span').strin
 #print "Thay doi: " + stockname_change
 
 color_stockname_close = isColor(float(stockname_close), float(gia_tham_chieu[0]))
-print color_stockname_close
+#print color_stockname_close
 
 print "Gia hien tai: " + colored(str(stockname_close), color_stockname_close) + "\t"+ colored(str(stockname_change), color_stockname_close)
 ###
