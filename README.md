@@ -8,6 +8,8 @@ Installation
 # sudo apt-get install python-requests
 # sudo apt-get install python-bs4
 # sudo apt-get install python-termcolor
+
+# sudo apt-get install python-openpyxl
 ```
 TODO
 ====
@@ -15,6 +17,7 @@ TODO
 [x] support parse command
 [] support notification
 [x] Need to utility cophieu68 vs cafe about maCK
+
 IDEAS
 ====
 AI ideas:
