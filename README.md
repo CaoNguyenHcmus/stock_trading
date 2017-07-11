@@ -15,6 +15,9 @@ TODO
 [x] support parse command
 [] support notification
 [x] Need to utility cophieu68 vs cafe about maCK
+[] nho hon khoi luong giao dich ngay hom truoc 50% vao luc 10h30
+[] gia tang hon 1% hoac giam 1% la thong bao
+
 IDEAS
 ====
 AI ideas:
