@@ -8,6 +8,8 @@ Installation
 # sudo apt-get install python-requests
 # sudo apt-get install python-bs4
 # sudo apt-get install python-termcolor
+
+# sudo apt-get install python-openpyxl
 ```
 TODO
 ====
@@ -15,8 +17,11 @@ TODO
 [x] support parse command
 [] support notification
 [x] Need to utility cophieu68 vs cafe about maCK
+<<<<<<< HEAD
 [] nho hon khoi luong giao dich ngay hom truoc 50% vao luc 10h30
 [] gia tang hon 1% hoac giam 1% la thong bao
+=======
+>>>>>>> 610739255c1a15e26966807ad1202679f4a1392e
 
 IDEAS
 ====
